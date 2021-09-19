@@ -35,18 +35,18 @@ const client = new WebClient("xoxb-2480804893744-2500097531939-Vsu1MAkEPFvInSIHR
 });
 
 // The name of the file you're going to upload
-const fileName = "/uploads/images/";
+const fileName = "/uploads/images/daycare.png";
 // ID of channel that you want to upload file to
-const channelName = "Slack-integration";
+const channelId= "ST02E4PNS9MW/C02D8CSQTV4";
 
 try {
   // Call the files.upload method using the WebClient
   const result =  client.files.upload({
     // channels can be a list of one to many strings
-    channels: channelName,
+    channels: channelId,
     initial_comment: "Here\'s my file :smile:",
     // Include your filename in a ReadStream here
-    file: createReadStream(fileName)
+    readStream: fs.createReadStream(fileName)
   });
 
   console.log(result);
@@ -84,6 +84,10 @@ catch (error) {
     file=req.file.path,
     initial_comment='My initial comment'
     )*/
+
+    app.get("/daycare.png", (req, res) => {
+        res.sendFile(path.join(__dirname, "./uploads/images/daycare.png"));
+      });
 
 app.listen(PORT, () => {
     console.log('Listening at ' + PORT );
