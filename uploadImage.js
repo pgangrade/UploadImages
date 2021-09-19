@@ -21,12 +21,13 @@ app.post('/upload', upload.single('photo'), (req, res) => {
 
     try {
         res.send(req.file);
+        console.log('Image uploaded successfully.');
     }
     catch(err){
         res.send(400);
     }
 
-    res.send('Image uploaded successfully.');
+    
     
 });
 
