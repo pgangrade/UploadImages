@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 // static directory from where we want to serve public files
 app.use(express.static('public'));
 
-app.post('/profile-upload-single', upload.single('profile-file'), function (req, res, next) {
+/*app.post('/upload', upload.single('photo'), function (req, res, next) {
     // req.file is the `profile-file` file
     // req.body will hold the text fields, if there were any
     console.log(JSON.stringify(req.file))
@@ -21,25 +21,25 @@ app.post('/profile-upload-single', upload.single('profile-file'), function (req,
     response += "Files uploaded successfully.<br>"
     response += `<img src="${req.file.path}" /><br>`
     return res.send(response)
-  });
+  });*/
 
-/*app.post('/upload', upload.single('photo'), (req, res) => {
+app.post('/upload', upload.single('photo'), (req, res) => {
     if(req.file) {
         res.json(req.file);
     }
     else throw 'error';
 
-    try {
+    /*try {
         res.send(req.file);
         console.log('Image uploaded successfully.');
     }
     catch(err){
         res.send(400);
-    }
+    } */
 
     
     
-});*/
+});
 
 app.listen(PORT, () => {
     console.log('Listening at ' + PORT );
