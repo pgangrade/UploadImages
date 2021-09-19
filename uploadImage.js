@@ -26,6 +26,7 @@ app.use(express.static('public'));
 app.post('/upload', upload.single('photo'), (req, res) => {
     if(req.file) {
         res.json(req.file);
+        console.log('Image uploaded successfully.');
     }
     else throw 'error';
 
