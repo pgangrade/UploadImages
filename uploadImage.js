@@ -10,20 +10,6 @@ const upload = multer({dest: __dirname + '/uploads/images'});
 // create our Express App
 const app = express();
 
-// Set up the port on which our app will run
-const PORT = process.env.PORT || 3000;
-
-// static directory from where we want to serve public files
-app.use(express.static('public'));
-
-app.post('/upload', upload.single('photo'), (req, res) => {
-    if(req.file) {
-        res.json(req.file);
-        //console.log('Image uploaded successfully.');
-    }
-    else throw 'error';
-});
-
 // Require the Node Slack SDK package (github.com/slackapi/node-slack-sdk)
 const { WebClient, LogLevel } = require('@slack/web-api');
 
@@ -34,16 +20,45 @@ const client = new WebClient("xoxb-2480804893744-2500097531939-Vsu1MAkEPFvInSIHR
   logLevel: LogLevel.DEBUG
 });
 
-// The name of the file you're going to upload
-const fileName = "/uploads/images/daycare.png";
+
+// Set up the port on which our app will run
+const PORT = process.env.PORT || 50000;
+
+// static directory from where we want to serve public files
+app.use(express.static('public'));
+
+app.post('/upload', upload.single('photo'), (req, res) => {
+    if(req.file) {
+        res.json(req.file);
+        // The name of the file you're going to upload
+const fileName = "/Users/poojagangrade/UploadImages/UploadImages/uploads/images/daycare.png";
 // ID of channel that you want to upload file to
-const channelId= "ST02E4PNS9MW/C02D8CSQTV4";
+const channelName= "slack-integration";
+
+http.createServer(function(req, res) {
+    // The filename is simple the local directory and tacks on the requested url
+    var filename = __dirname+req.url;
+  
+    // This line opens the file as a readable stream
+    var readStream = fs.createReadStream(filename);
+  
+    // This will wait until we know the readable stream is actually valid before piping
+    readStream.on('open', function () {
+      // This just pipes the read stream to the response object (which goes to the client)
+      readStream.pipe(res);
+    });
+  
+    // This catches any errors that happen while creating the readable stream (usually invalid names)
+    readStream.on('error', function(err) {
+      res.end(err);
+    });
+  }).listen(50000);
 
 try {
   // Call the files.upload method using the WebClient
   const result =  client.files.upload({
     // channels can be a list of one to many strings
-    channels: channelId,
+    channels: channelName,
     initial_comment: "Here\'s my file :smile:",
     // Include your filename in a ReadStream here
     readStream: fs.createReadStream(fileName)
@@ -54,6 +69,13 @@ try {
 catch (error) {
   console.error(error);
 } 
+        //console.log('Image uploaded successfully.');
+    }
+    else throw 'error';
+});
+
+
+
 
 /*app.post('/upload', upload.single('photo'), function (req, res, next) {
     // req.file is the `profile-file` file
@@ -91,5 +113,5 @@ catch (error) {
 
 app.listen(PORT, () => {
     console.log('Listening at ' + PORT );
-    console.log('Server Running at http://127.0.0.1:3000')
+    console.log('Server Running at http://127.0.0.1:50000')
 });
