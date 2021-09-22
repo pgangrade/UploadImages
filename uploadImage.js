@@ -22,20 +22,29 @@ const client = new WebClient("xoxb-2480804893744-2500097531939-Vsu1MAkEPFvInSIHR
 
 
 // Set up the port on which our app will run
-const PORT = process.env.PORT || 50000;
+const PORT = process.env.PORT || 3001;
 
 // static directory from where we want to serve public files
 app.use(express.static('public'));
 
-app.post('/upload', upload.single('photo'), (req, res) => {
-    if(req.file) {
-        res.json(req.file);
-        // The name of the file you're going to upload
-const fileName = "/Users/poojagangrade/UploadImages/UploadImages/uploads/images/daycare.png";
-// ID of channel that you want to upload file to
-const channelName= "slack-integration";
+app.use('/uploads', express.static('uploads'));
 
-http.createServer(function(req, res) {
+app.post('/profile-upload-single', upload.single('profile-file'), function (req, res, next) {
+  // req.file is the `profile-file` file
+  // req.body will hold the text fields, if there were any
+  console.log(JSON.stringify(req.file))
+  var response = '<a href="/">Home</a><br>'
+  response += "Files uploaded successfully.<br>"
+  response += `<img src="${req.file.path}" /><br>`
+  return res.send(response)
+})
+
+// The name of the file you're going to upload
+//const fileName = "/Users/poojagangrade/UploadImages/UploadImages/uploads/images/daycare.png";
+// ID of channel that you want to upload file to
+//const channelName= "slack-integration";
+
+/*//http.createServer(function(req, res) {
     // The filename is simple the local directory and tacks on the requested url
     var filename = __dirname+req.url;
   
@@ -52,7 +61,7 @@ http.createServer(function(req, res) {
     readStream.on('error', function(err) {
       res.end(err);
     });
-  }).listen(50000);
+  }).listen(3001);
 
 try {
   // Call the files.upload method using the WebClient
@@ -70,9 +79,9 @@ catch (error) {
   console.error(error);
 } 
         //console.log('Image uploaded successfully.');
-    }
-    else throw 'error';
-});
+    //}
+    ////else throw 'error';
+//});
 
 
 
@@ -97,21 +106,19 @@ catch (error) {
         res.send(400);
     } */
 
-    
-    
 
 
 /*response = app.files_upload(
     channels= 'slack-integration',
     file=req.file.path,
     initial_comment='My initial comment'
-    )*/
+    )*/ 
 
-    app.get("/daycare.png", (req, res) => {
+    /*app.get("/daycare.png", (req, res) => {
         res.sendFile(path.join(__dirname, "./uploads/images/daycare.png"));
-      });
+      }); */
 
 app.listen(PORT, () => {
     console.log('Listening at ' + PORT );
-    console.log('Server Running at http://127.0.0.1:50000')
+    console.log('Server Running at http://127.0.0.1:3001')
 });
