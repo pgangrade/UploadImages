@@ -22,7 +22,7 @@ const client = new WebClient("xoxb-2480804893744-2500097531939-Vsu1MAkEPFvInSIHR
 
 
 // Set up the port on which our app will run
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 // static directory from where we want to serve public files
 app.use(express.static('public'));
@@ -52,9 +52,9 @@ app.post('/upload', upload.single('photo'), (req, res) => {
 
 
 // The name of the file you're going to upload
-//const fileName = "/Users/poojagangrade/UploadImages/UploadImages/uploads/images/daycare.png";
+const fileName = "/Users/poojagangrade/UploadImages/UploadImages/uploads/images/daycare.png";
 // ID of channel that you want to upload file to
-//const channelName= "slack-integration";
+const channelName= "slack-integration";
 
 http.createServer(function(req, res) {
     // The filename is simple the local directory and tacks on the requested url
@@ -73,7 +73,7 @@ http.createServer(function(req, res) {
     readStream.on('error', function(err) {
       res.end(err);
     });
-  }).listen(5000);
+  }).listen(PORT);
 
 try {
   // Call the files.upload method using the WebClient
@@ -132,5 +132,5 @@ catch (error) {
 
 app.listen(PORT, () => {
     console.log('Listening at ' + PORT );
-    console.log('Server Running at http://127.0.0.1:5000')
+    //console.log('Server Running at http://127.0.0.1:3000')
 });
